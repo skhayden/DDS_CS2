@@ -1,10 +1,13 @@
 #First I need to explore the data and clean any varaibles as needed
 library(dplyr)
 library(stringi)
+# library(rvest)
+# library(XML)
+# install.packages("htmltab")
+library(htmltab)
 
 
-setwd("~/SMU/MSDS6306 - Doing Data Science/CaseStudy2")
-
+setwd("~/SMU/DDS_CS2/Data")
 df = read.csv("Procrastination.csv")
 
 #how big is the dataset
@@ -41,5 +44,20 @@ df$GPMEAN = rowMeans(select(df, contains("GP")))
 df$DPMEAN = rowMeans(select(df, contains("DP")))
 df$SWLSMEAN = rowMeans(select(df, contains("SWLS")))
 
+#Scrapping the Wikipedia HDI tables... wikipedia is not playing nice
+#I still have not yet scrapped the tables...
+
+url = "https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index#Complete_list_of_countries"
+
+page = read_html(url)
+
+#experimenting with forward pipe (from HW 9)
+holding = page %>%
+  html_nodes(xpath = "//td") %>%
+  # .[1] %>%
+  html_table(fill=TRUE)
 
 
+html = read_html(url)
+nodes = html_nodes(html, xpath = '//*[@id="mw-content-text"]/div/div[5]/table/tbody/tr/td[1]/table/tbody/tr[3]
+')
