@@ -1,10 +1,15 @@
 #First I need to explore the data and clean any varaibles as needed
 library(dplyr)
 library(stringi)
-# library(rvest)
+library(rvest)
+library(xml2)
+library(selectr)
 # library(XML)
 # install.packages("htmltab")
-library(htmltab)
+# install.packages(xml2)
+# install.packages(selectr)
+
+
 
 
 setwd("~/SMU/DDS_CS2/Data")
@@ -53,11 +58,7 @@ page = read_html(url)
 
 #get the table info
 holding = page %>%
-  html_nodes(xpath = '//td') %>%
-  .[2:10] %>%
-  html_table(fill = TRUE)
+  rvest::html_nodes(xpath = "//td//table") %>%
+  .[1] %>%
+  rvest::html_table(fill = TRUE)
 
-
-html = read_html(url)
-nodes = html_nodes(page, xpath = '//td')
-test = html_table(page, fill = TRUE)
